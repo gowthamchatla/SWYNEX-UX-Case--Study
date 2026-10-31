@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>QuickTask — High-Fidelity UI & Prototype</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<style>
+:root{--pg:#F6F8FB;--card:#fff;--pt:#101828;--pm:#667085;--pl:#E4E8EF;--ac:#378ADD;--acd:#185FA5;--dg:#D85A30}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--pg:#0B0F19;--card:#131A2A;--pt:#F2F4F8;--pm:#98A2B3;--pl:#26304A}}
+:root[data-theme="dark"]{--pg:#0B0F19;--card:#131A2A;--pt:#F2F4F8;--pm:#98A2B3;--pl:#26304A}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*:before,*:after{box-sizing:inherit}
+body{margin:0;background:var(--pg);color:var(--pt);font:400 15px/1.5 Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+.top{padding:28px 20px 8px;max-width:1080px;margin:0 auto}
+.top h1{font-size:24px;margin:0 0 4px;letter-spacing:-.01em}.top p{margin:0;color:var(--pm)}
+.grid{display:grid;grid-template-columns:360px 1fr;gap:28px;max-width:1080px;margin:0 auto;padding:16px 20px 40px}
+@media (max-width:820px){.grid{grid-template-columns:1fr}}
+.stage{display:flex;flex-direction:column;align-items:center;gap:12px}
+.jump{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.jump button{font:500 12px Inter,sans-serif;border:1px solid var(--pl);background:var(--card);color:var(--pt);border-radius:99px;padding:6px 12px;cursor:pointer}
+.jump button.on{background:var(--ac);border-color:var(--ac);color:#fff}
+/* phone + tokens */
+.phone{--bg:#fff;--sf:#F3F5F9;--ln:#E4E8EF;--tx:#101828;--mu:#667085;width:320px;height:660px;border-radius:36px;border:8px solid #1d2433;background:var(--bg);color:var(--tx);position:relative;overflow:hidden;box-shadow:0 18px 50px rgba(16,24,40,.22);transition:background .2s}
+.phone.dark{--bg:#0F1420;--sf:#1A2133;--ln:#2A3350;--tx:#F2F4F8;--mu:#98A2B3}
+.scr{position:absolute;inset:0;padding:42px 18px 76px;display:none;flex-direction:column;overflow:auto}
+.scr.on{display:flex}
+.sb{position:absolute;top:12px;left:22px;right:22px;display:flex;justify-content:space-between;font-size:11px;font-weight:600}
+h2{font-size:24px;line-height:1.2;margin:2px 0 0;letter-spacing:-.02em}
+.cap{font-size:12px;color:var(--mu);margin:0}
+.lbl{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--mu);margin:16px 0 8px}
+.sum{background:var(--sf);border-radius:14px;padding:12px 14px;display:flex;justify-content:space-between;font-size:13px;margin-top:12px}
+.sum b{color:var(--ac)}
+.row{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid var(--ln);border-radius:12px;margin-bottom:8px;font-size:14px;cursor:pointer;background:var(--bg)}
+.row .ck{width:20px;height:20px;border-radius:50%;border:1.8px solid var(--mu);flex:none;display:grid;place-items:center;color:#fff;font-size:11px}
+.row.done .ck{background:var(--ac);border-color:var(--ac)}
+.row.done span.t{color:var(--mu);text-decoration:line-through}
+.row .st{margin-left:auto;color:var(--ac);font-weight:600;font-size:12px}
+.fab{position:absolute;right:18px;bottom:88px;width:54px;height:54px;border-radius:50%;background:var(--ac);color:#fff;border:0;font-size:28px;line-height:1;cursor:pointer;box-shadow:0 8px 20px rgba(55,138,221,.45)}
+.tabs{position:absolute;left:0;right:0;bottom:0;height:68px;background:var(--bg);border-top:1px solid var(--ln);display:flex}
+.tabs button{flex:1;background:none;border:0;color:var(--mu);font:500 11px Inter,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer}
+.tabs button.on{color:var(--ac)}.tabs svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.btn{display:block;width:100%;border:0;border-radius:14px;padding:14px;font:600 15px Inter,sans-serif;cursor:pointer;background:var(--ac);color:#fff}
+.btn.sec{background:var(--sf);color:var(--tx)}
+.btn:active{transform:scale(.98)}
+.fld{margin-top:14px}.fld label{font-size:12px;color:var(--mu);display:block;margin-bottom:6px}
+.in{width:100%;border:1.5px solid transparent;background:var(--sf);color:var(--tx);border-radius:12px;padding:13px 14px;font:400 14px Inter,sans-serif;outline:0}
+.in:focus{border-color:var(--ac)}.in.bad{border-color:var(--dg)}
+.err{color:var(--dg);font-size:12px;margin:6px 0 0;min-height:16px}
+.seg{display:flex;gap:8px}.seg button{flex:1;border:0;border-radius:12px;padding:12px;background:var(--sf);color:var(--mu);font:500 14px Inter,sans-serif;cursor:pointer}
+.seg button.on{background:var(--ac);color:#fff;font-weight:600}
+.hero{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:10px}
+.orb{width:128px;height:128px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#8CC2FF,#378ADD 60%,#185FA5);display:grid;place-items:center;font-size:52px;box-shadow:0 14px 34px rgba(55,138,221,.4);margin-bottom:14px}
+.cards{display:flex;gap:10px;margin-top:12px}.card{flex:1;background:var(--sf);border-radius:14px;padding:12px}.card b{display:block;font-size:22px;margin-top:4px}
+.bars{display:flex;align-items:flex-end;gap:8px;height:110px;border-bottom:1px solid var(--ln);padding-bottom:6px}
+.bars i{flex:1;background:#B5D4F4;border-radius:6px 6px 0 0}.bars i.hi{background:var(--ac)}
+.days{display:flex;gap:8px;font-size:10px;color:var(--mu);margin-top:4px}.days span{flex:1;text-align:center}
+.set{display:flex;justify-content:space-between;align-items:center;padding:13px;border:1px solid var(--ln);border-radius:12px;margin-bottom:8px;font-size:14px}
+.sw{width:42px;height:24px;border-radius:12px;background:var(--ln);border:0;position:relative;cursor:pointer}
+.sw:after{content:"";position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:#fff;transition:left .15s}
+.sw.on{background:var(--ac)}.sw.on:after{left:20px}
+.av{width:52px;height:52px;border-radius:50%;background:#E6F1FB;color:var(--acd);display:grid;place-items:center;font-weight:700;font-size:18px}
+/* design system panel */
+.ds section{background:var(--card);border:1px solid var(--pl);border-radius:16px;padding:18px;margin-bottom:16px}
+.ds h3{margin:0 0 12px;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--pm)}
+.sw-row{display:flex;flex-wrap:wrap;gap:10px}.chip{width:104px}.chip i{display:block;height:44px;border-radius:10px;border:1px solid var(--pl);margin-bottom:6px}
+.chip b{display:block;font-size:12px}.chip span{font-size:11px;color:var(--pm)}
+.ty div{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--pl);padding:8px 0}.ty span{font-size:11px;color:var(--pm)}
+.sp{display:flex;align-items:flex-end;gap:14px}.sp div{text-align:center;font-size:11px;color:var(--pm)}.sp i{display:block;background:var(--ac);border-radius:3px;margin:0 auto 4px}
+.demo{--bg:#fff;--sf:#F3F5F9;--ln:#E4E8EF;--tx:#101828;--mu:#667085;background:#fff;color:#101828;border-radius:12px;padding:14px;display:grid;gap:10px;max-width:300px}
+.demo .row{margin:0}
+</style>
+</head>
+<body>
+<header class="top"><h1>QuickTask — High-Fidelity UI & Prototype</h1><p>Tap through the phone to try the flow. The design system behind it is on the right.</p></header>
+<main class="grid">
+<section class="stage">
+<div class="jump" id="jump"></div>
+<div class="phone" id="phone">
+ <div class="sb"><span>9:41</span><span>100%</span></div>
+ <div class="scr on" id="onboard"><div class="hero"><div class="orb">✓</div><h2>Small steps,<br>every day</h2><p class="cap" style="max-width:220px">Track daily tasks and build habits without the clutter.</p></div><button class="btn" data-go="home">Get started</button></div>
+ <div class="scr" id="home"><p class="cap" id="date"></p><h2>Today</h2><div class="sum"><span id="cnt"></span><b>🔥 6 day streak</b></div><div class="lbl">Tasks</div><div id="tl"></div><div class="lbl">Habits</div><div id="hl"></div><button class="fab" data-go="add" aria-label="Add item">+</button><div class="tabs" data-tab="home"></div></div>
+ <div class="scr" id="add"><div style="display:flex;justify-content:space-between;align-items:center"><button class="btn sec" style="width:auto;padding:8px 14px;font-size:13px" data-go="home">Cancel</button><b>New item</b><span style="width:70px"></span></div>
+  <div class="fld"><label>Name</label><input class="in" id="nm" maxlength="60" placeholder="e.g. Read 10 pages"><p class="err" id="er"></p></div>
+  <div class="fld"><label>Type</label><div class="seg" id="seg"><button class="on" data-t="0">Task</button><button data-t="1">Habit</button></div></div>
+  <div class="fld"><label>Reminder (optional)</label><input class="in" type="time" value="20:00"></div>
+  <div style="margin-top:auto"><button class="btn" id="save">Save item</button></div></div>
+ <div class="scr" id="progress"><h2>Progress</h2><p class="cap">This week</p><div class="cards"><div class="card"><span class="cap">Completed</span><b>26</b></div><div class="card"><span class="cap">Best streak</span><b style="color:var(--ac)">6 days</b></div></div><div class="lbl">Tasks completed</div><div class="bars"><i style="height:50%"></i><i class="hi" style="height:80%"></i><i style="height:35%"></i><i class="hi" style="height:100%"></i><i style="height:65%"></i><i style="height:18%"></i><i class="hi" style="height:80%"></i></div><div class="days"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div><div class="lbl">Habit streaks</div><div class="row" style="cursor:default"><span class="t">Evening walk</span><span class="st">5 days</span></div><div class="row" style="cursor:default"><span class="t">Journal</span><span class="st">6 days</span></div><div class="tabs" data-tab="progress"></div></div>
+ <div class="scr" id="profile"><h2>Profile</h2><div style="display:flex;gap:12px;align-items:center;margin:14px 0 4px"><div class="av">A</div><div><b>Alex Kumar</b><p class="cap">alex.kumar@email.com</p></div></div><div class="lbl">Preferences</div><div class="set">Notifications<button class="sw on" aria-label="Notifications"></button></div><div class="set">Dark mode<button class="sw" id="dk" aria-label="Dark mode"></button></div><div class="set">Default reminder<span class="cap">8:00 PM</span></div><div class="lbl">Account</div><div class="set">Edit profile<span class="cap">›</span></div><div class="set" style="color:var(--dg)">Log out</div><div class="tabs" data-tab="profile"></div></div>
+</div>
+</section>
+<aside class="ds">
+<section><h3>Colour</h3><div class="sw-row">
+<div class="chip"><i style="background:#378ADD"></i><b>Accent</b><span>#378ADD</span></div>
+<div class="chip"><i style="background:#185FA5"></i><b>Accent dark</b><span>#185FA5</span></div>
+<div class="chip"><i style="background:#101828"></i><b>Text</b><span>#101828</span></div>
+<div class="chip"><i style="background:#667085"></i><b>Muted</b><span>#667085</span></div>
+<div class="chip"><i style="background:#F3F5F9"></i><b>Surface</b><span>#F3F5F9</span></div>
+<div class="chip"><i style="background:#D85A30"></i><b>Error</b><span>#D85A30</span></div></div></section>
+<section><h3>Typography — Inter</h3><div class="ty">
+<div><b style="font-size:24px;letter-spacing:-.02em">Screen title</b><span>700 · 24/29</span></div>
+<div><b style="font-size:16px">Section heading</b><span>600 · 16/24</span></div>
+<div><span style="font-size:14px;color:var(--pt)">Body and list items</span><span>400 · 14/21</span></div>
+<div><span style="font-size:12px;color:var(--pt)">Caption and helper text</span><span>400 · 12/18</span></div>
+<div><span style="font-size:11px;letter-spacing:.06em;color:var(--pt)">SECTION LABEL</span><span>600 · 11 caps</span></div></div></section>
+<section><h3>Spacing and radius</h3><div class="sp">
+<div><i style="width:4px;height:4px"></i>4</div><div><i style="width:8px;height:8px"></i>8</div><div><i style="width:12px;height:12px"></i>12</div><div><i style="width:16px;height:16px"></i>16</div><div><i style="width:24px;height:24px"></i>24</div></div>
+<p class="cap" style="color:var(--pm);margin-top:12px">4-point scale. Radius 12 for inputs and rows, 14 for buttons and cards, full for the add button and avatars.</p></section>
+<section><h3>Components</h3><div class="demo">
+<button class="btn" style="pointer-events:none">Primary button</button><button class="btn sec" style="pointer-events:none">Secondary button</button>
+<div class="row done" style="pointer-events:none"><span class="ck">✓</span><span class="t">List item, done</span></div>
+<div class="row" style="pointer-events:none"><span class="ck"></span><span class="t">List item, default</span></div>
+<input class="in bad" value="Invalid input" readonly><p class="err" style="margin:-4px 0 0">Inline error message</p></div></section>
+</aside>
+</main>
+<script>
+var S=[{n:"Submit assignment",h:0,d:0},{n:"Read 10 pages",h:0,d:1},{n:"Drink water",h:0,d:1},{n:"Evening walk",h:1,d:0,s:"5 days"},{n:"Journal",h:1,d:1,s:"6 days"}],T=0;
+var NAMES={onboard:"Onboarding",home:"Home",add:"Add item",progress:"Progress",profile:"Profile"};
+var IC={home:'<path d="M3 11l9-8 9 8M5 10v10h14V10"/>',progress:'<path d="M5 20V10M12 20V4M19 20v-7"/>',profile:'<circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/>'};
+function $(s){return document.querySelector(s)}
+function go(id){document.querySelectorAll(".scr").forEach(function(e){e.classList.toggle("on",e.id===id)});document.querySelectorAll("#jump button").forEach(function(b){b.classList.toggle("on",b.dataset.go===id)});if(id==="home")draw();if(id==="add"){$("#nm").value="";$("#er").textContent="";$("#nm").classList.remove("bad")}}
+function draw(){
+ $("#date").textContent=new Date().toLocaleDateString(undefined,{weekday:"long",month:"short",day:"numeric"});
+ var done=S.filter(function(x){return x.d}).length;$("#cnt").textContent=done+" of "+S.length+" done";
+ [["#tl",0],["#hl",1]].forEach(function(p){var box=$(p[0]);box.innerHTML="";var l=S.filter(function(x){return x.h===p[1]});
+  if(!l.length){box.innerHTML='<p class="cap" style="text-align:center;padding:12px">Nothing here yet. Tap + to add one.</p>';return}
+  l.forEach(function(x){var r=document.createElement("div");r.className="row"+(x.d?" done":"");r.innerHTML='<span class="ck">'+(x.d?"✓":"")+'</span><span class="t"></span>'+(x.s?'<span class="st">'+x.s+"</span>":"");r.querySelector(".t").textContent=x.n;r.onclick=function(){x.d=x.d?0:1;draw()};box.appendChild(r)})})}
+function save(){var v=$("#nm").value.trim(),m="";
+ if(!v)m="Please enter a name for this item.";else if(v.length<2)m="Name must be at least 2 characters.";
+ else if(S.some(function(x){return x.h===T&&x.n.toLowerCase()===v.toLowerCase()}))m="You already have this "+(T?"habit":"task")+".";
+ $("#er").textContent=m;$("#nm").classList.toggle("bad",!!m);if(m)return;
+ S.push(T?{n:v,h:1,d:0,s:"0 days"}:{n:v,h:0,d:0});go("home")}
+Object.keys(NAMES).forEach(function(k){var b=document.createElement("button");b.textContent=NAMES[k];b.dataset.go=k;b.onclick=function(){go(k)};$("#jump").appendChild(b)});
+document.querySelectorAll(".tabs").forEach(function(t){["home","progress","profile"].forEach(function(k){var b=document.createElement("button");b.className=t.dataset.tab===k?"on":"";b.innerHTML='<svg viewBox="0 0 24 24">'+IC[k]+"</svg>"+NAMES[k];b.onclick=function(){go(k)};t.appendChild(b)})});
+document.querySelectorAll("[data-go]").forEach(function(e){if(e.closest("#jump"))return;e.onclick=function(){go(e.dataset.go)}});
+document.querySelectorAll("#seg button").forEach(function(b){b.onclick=function(){T=+b.dataset.t;document.querySelectorAll("#seg button").forEach(function(x){x.classList.toggle("on",x===b)})}});
+$("#save").onclick=save;$("#nm").oninput=function(){$("#er").textContent="";this.classList.remove("bad")};
+$("#dk").onclick=function(){this.classList.toggle("on");$("#phone").classList.toggle("dark")};
+document.querySelectorAll(".sw:not(#dk)").forEach(function(s){s.onclick=function(){s.classList.toggle("on")}});
+go("onboard");
+</script>
+</body>
+</html>
